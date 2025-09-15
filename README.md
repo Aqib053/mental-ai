@@ -1,5 +1,13 @@
 # 💬 Mental AI – Youth Wellness Chatbot  
 
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)  
+![Streamlit](https://img.shields.io/badge/Streamlit-Framework-FF4B4B?logo=streamlit)  
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-API-green?logo=google)  
+![Hackathon](https://img.shields.io/badge/Hackathon-Project-orange)  
+![License](https://img.shields.io/badge/License-MIT-yellow)  
+
+---
+
 ## 🚀 About the Project  
 AI-powered confidential **mental wellness chatbot** with:  
 - 🌐 Multilingual support (English, Hindi, Kannada, etc.)  
@@ -15,16 +23,6 @@ AI-powered confidential **mental wellness chatbot** with:
 - 📈 Mood history with charts  
 - 📝 Export chats & moods for journaling  
 - 📱 Clean, mobile-friendly UI (Streamlit)  
-
----
-
-## 📂 Project Files  
-
-- **`chatbot.py`** → Main Streamlit app (chatbot UI + mood tracking + multilingual support)  
-- **`hello_gemini.py`** → Minimal Gemini demo (quick test: "positive message for a stressed student")  
-- **`list_models.py`** → Lists available models in Vertex AI (optional for judges exploring model availability)  
-- **`requirements.txt`** → Dependencies needed to run the app  
-- **`README.md`** → Project documentation  
 
 ---
 
@@ -61,10 +59,11 @@ Unlike regular chatbots, **Mental AI** is:
 
 ## 📂 Project Setup  
 
-1. Clone this repository  
+1. **Clone this repository**  
    ```bash
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
+
 2.Install dependencies
 
 pip install -r requirements.txt
