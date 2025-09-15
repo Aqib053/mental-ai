@@ -29,13 +29,14 @@ AI-powered confidential **mental wellness chatbot** with:
 ## 📸 Screenshots  
 
 ### 🖥️ Chatbot Interface  
-![Chatbot UI](assets/screenshots/chatbot_ui.png)  
+![Chatbot UI](assets/screenshots/screenshots/chatbot_ui.png)
 
-### 📊 Mood Tracker  
-![Mood Tracker](assets/screenshots/mood_tracker.png)  
+ ### 📊 Mood Tracker  
+![Mood Tracker](assets/screenshots/screenshots/mood_tracker.png)
 
 ### 🌍 Multilingual Support  
-![Multilingual](assets/screenshots/multilingual.png)  
+
+![Multilingual](assets/screenshots/screenshots/multilingual.png)
 
 ---
 
