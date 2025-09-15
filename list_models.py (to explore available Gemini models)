@@ -1,4 +1,6 @@
-'''from google.cloud import aiplatform
+### List available Gemini models
+```python
+from google.cloud import aiplatform
 
 # Initialize Vertex AI (project ID needs to match judge's project)
 aiplatform.init(project="YOUR_PROJECT_ID", location="us-central1")
@@ -6,4 +8,4 @@ aiplatform.init(project="YOUR_PROJECT_ID", location="us-central1")
 # List models
 models = aiplatform.Model.list()
 for m in models:
-    print(m.resource_name, m.display_name)'''
+    print(m.resource_name, m.display_name)
