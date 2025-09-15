@@ -66,10 +66,13 @@ Unlike regular chatbots, **Mental AI** is:
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
 2.Install dependencies
+
 pip install -r requirements.txt
 
 3.Run the chatbot
+
 streamlit run chatbot.py
 
 4.(Optional) Test Gemini with a simple script
+
 python hello_gemini.py
