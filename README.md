@@ -19,15 +19,10 @@ AI-powered confidential **mental wellness chatbot** with:
 ---
 
 ## 📸 Screenshots  
-
-### 🖥️ Chatbot Interface  
-![Chatbot UI](assets/screenshots/chatbot_ui.png)  
-
-### 📊 Mood Tracker  
-![Mood Tracker](assets/screenshots/mood_tracker.png)  
-
-### 🌍 Multilingual Support  
-![Multilingual](assets/screenshots/multilingual.png)  
+(Add your screenshots here after testing)  
+- Chatbot UI  
+- Mood Tracker  
+- Multilingual Support  
 
 ---
 
@@ -56,11 +51,4 @@ Unlike regular chatbots, **Mental AI** is:
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
 
-   2. Set up your API key
-   - Get a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/).
-   - Create a `.env` file in the project root and add:
-     ```
-     GEMINI_API_KEY=your_api_key_here
-     ```
-   - Or directly replace `"YOUR_API_KEY_HERE"` in `chatbot.py` with your key.
 
