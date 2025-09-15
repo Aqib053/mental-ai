@@ -18,6 +18,16 @@ AI-powered confidential **mental wellness chatbot** with:
 
 ---
 
+## 📂 Project Files  
+
+- **`chatbot.py`** → Main Streamlit app (chatbot UI + mood tracking + multilingual support)  
+- **`hello_gemini.py`** → Minimal Gemini demo (quick test: "positive message for a stressed student")  
+- **`list_models.py`** → Lists available models in Vertex AI (optional for judges exploring model availability)  
+- **`requirements.txt`** → Dependencies needed to run the app  
+- **`README.md`** → Project documentation  
+
+---
+
 ## 📸 Screenshots  
 
 ### 🖥️ Chatbot Interface  
@@ -55,11 +65,16 @@ Unlike regular chatbots, **Mental AI** is:
    ```bash
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
+2.Install dependencies
 
-2. Add your Google Gemini API key
-   - Go to [Google AI Studio](https://aistudio.google.com/) and get a free Gemini API key.
-   - Open `chatbot.py` and replace:
-     ```python
-     genai.configure(api_key="YOUR_API_KEY_HERE")
-     ```
-     with your actual API key.
+pip install -r requirements.txt
+
+
+3.Run the chatbot
+
+streamlit run chatbot.py
+
+
+4.(Optional) Test Gemini with a simple script
+
+python hello_gemini.py
