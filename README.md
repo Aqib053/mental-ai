@@ -55,3 +55,11 @@ Unlike regular chatbots, **Mental AI** is:
    ```bash
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
+
+2. Add your Google Gemini API key
+   - Go to [Google AI Studio](https://aistudio.google.com/) and get a free Gemini API key.
+   - Open `chatbot.py` and replace:
+     ```python
+     genai.configure(api_key="YOUR_API_KEY_HERE")
+     ```
+     with your actual API key.
