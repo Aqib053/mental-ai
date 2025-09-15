@@ -19,10 +19,15 @@ AI-powered confidential **mental wellness chatbot** with:
 ---
 
 ## 📸 Screenshots  
-(Add your screenshots here after testing)  
-- Chatbot UI  
-- Mood Tracker  
-- Multilingual Support  
+
+### 🖥️ Chatbot Interface  
+![Chatbot UI](assets/screenshots/chatbot_ui.png)  
+
+### 📊 Mood Tracker  
+![Mood Tracker](assets/screenshots/mood_tracker.png)  
+
+### 🌍 Multilingual Support  
+![Multilingual](assets/screenshots/multilingual.png)  
 
 ---
 
@@ -50,5 +55,3 @@ Unlike regular chatbots, **Mental AI** is:
    ```bash
    git clone https://github.com/your-username/mental-ai.git
    cd mental-ai
-
-
