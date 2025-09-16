@@ -49,9 +49,6 @@ st.markdown("""
             margin: 6px 0;
             font-size: 16px;
         }
-        .sidebar .sidebar-content {
-            background: #f8f9fa;
-        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -97,7 +94,7 @@ if prompt := st.chat_input("How are you feeling today?"):
     st.session_state["messages"].append({"role": "user", "content": prompt})
 
     try:
-        # Generate AI reply
+        # Try Gemini API
         response = model.generate_content(
             f"You are a supportive, empathetic mental wellness assistant for young students. "
             f"Always be encouraging, confidential, and positive. Avoid medical advice. "
@@ -109,9 +106,11 @@ if prompt := st.chat_input("How are you feeling today?"):
         if language != "English":
             reply = GoogleTranslator(source="en", target=language.lower()).translate(reply)
 
-    except Exception as e:
-        reply = f"⚠️ Error: {str(e)}"
+    except Exception:
+        # Mock fallback for hackathon demo
+        reply = "💡 (Demo Mode) Thanks for sharing! Imagine the AI gave you a kind and supportive reply here 💙"
 
+    # Save bot reply
     st.session_state["messages"].append({"role": "assistant", "content": reply})
 
 # --------------------------
