@@ -5,48 +5,54 @@ import pandas as pd
 from deep_translator import GoogleTranslator
 
 # --------------------------
-# CONFIGURE GEMINI (from Streamlit Secrets)
+# CONFIGURE GEMINI
 # --------------------------
-api_key = st.secrets["GEMINI_API_KEY"]  # ✅ Correct: must match secrets.toml
-genai.configure(api_key=api_key)
-
-try:
-    model = genai.GenerativeModel("models/gemini-1.5-flash")  # ✅ FIXED
-except Exception as e:
-    st.error(f"⚠️ Gemini init failed: {str(e)}")
-    st.stop()
-
+genai.configure(api_key="AIzaSyCMUMHtYdcICVeQrQo7swft7hmTcYR4834")  # ⚠️ Replace before running
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --------------------------
 # PAGE SETTINGS
 # --------------------------
 st.set_page_config(page_title="Youth Mental Wellness Chatbot", page_icon="💙", layout="wide")
 
-# Custom CSS
+# --------------------------
+# CUSTOM CSS (UI/UX)
+# --------------------------
 st.markdown("""
     <style>
         .main {
-            background: linear-gradient(135deg, #f3e7ff 0%, #e3f6f5 100%);
+            background: #f9faff;
+        }
+        .stApp {
+            background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        }
+        .header {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 15px;
+            color: white;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            margin-bottom: 20px;
+        }
+        .chat-container {
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
         }
         .user-msg {
-            background-color: #cce5ff;
-            padding: 10px;
+            background: #cce5ff;
+            padding: 8px 12px;
             border-radius: 10px;
             margin: 5px 0;
         }
         .bot-msg {
-            background-color: #d4edda;
-            padding: 10px;
+            background: #d4edda;
+            padding: 8px 12px;
             border-radius: 10px;
             margin: 5px 0;
-        }
-        .header {
-            font-size: 28px;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -54,56 +60,56 @@ st.markdown("""
 # --------------------------
 # HEADER
 # --------------------------
-st.markdown('<div class="header">🌟 Youth Mental Wellness Chatbot 🌟</div>', unsafe_allow_html=True)
-st.write("💙 Confidential, empathetic AI support for students — anytime, anywhere.")
+st.markdown('<div class="header">💙 Youth Mental Wellness Chatbot 💙</div>', unsafe_allow_html=True)
+st.write("Confidential, empathetic AI support for students — anytime, anywhere.")
 
 # --------------------------
 # SIDEBAR
 # --------------------------
 st.sidebar.title("⚙️ Settings")
-lang = st.sidebar.selectbox("🌍 Language", ["en", "hi", "kn"], index=0)
-st.sidebar.markdown("---")
-st.sidebar.write("💡 **Tips:**\n- Type your feelings below\n- Log moods daily\n- Use 🚨 Panic Button if needed")
+language = st.sidebar.selectbox("🌍 Choose your language", ["English", "Hindi", "Kannada"])
+st.sidebar.markdown("### 💡 Tips")
+st.sidebar.write("👉 Type your feelings below\n👉 Log moods daily\n👉 Use 🚨 Panic Button if needed")
 
 # --------------------------
-# SESSION STATE
+# CHAT HISTORY
 # --------------------------
+st.markdown("### 💬 Chat")
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
-if "mood_log" not in st.session_state:
-    st.session_state["mood_log"] = []
 
-# --------------------------
-# CHAT DISPLAY
-# --------------------------
-st.subheader("💬 Chat")
-for msg in st.session_state["messages"]:
-    css_class = "user-msg" if msg["role"] == "user" else "bot-msg"
-    st.markdown(f"<div class='{css_class}'><b>{msg['role'].capitalize()}:</b> {msg['content']}</div>", unsafe_allow_html=True)
+with st.container():
+    for msg in st.session_state["messages"]:
+        if msg["role"] == "user":
+            st.markdown(f"<div class='user-msg'><b>You:</b> {msg['content']}</div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='bot-msg'><b>Bot:</b> {msg['content']}</div>", unsafe_allow_html=True)
 
 # --------------------------
 # CHAT INPUT
 # --------------------------
 if prompt := st.chat_input("How are you feeling today?"):
-    translated_prompt = GoogleTranslator(source="auto", target="en").translate(prompt)
+    # Translate user input
+    if language != "English":
+        prompt_translated = GoogleTranslator(source="auto", target="en").translate(prompt)
+    else:
+        prompt_translated = prompt
+
+    # Save user input
     st.session_state["messages"].append({"role": "user", "content": prompt})
 
     try:
-        # Sentiment detection
-        sentiment_resp = model.generate_content(
-            f"Classify this text as Positive, Neutral, or Negative: {translated_prompt}"
-        )
-        sentiment_check = sentiment_resp.text.strip() if hasattr(sentiment_resp, "text") else "Neutral"
-
-        # AI response
+        # Generate AI reply
         response = model.generate_content(
-            f"You are a kind, empathetic assistant. "
-            f"User sentiment: {sentiment_check}. "
-            f"Respond with encouragement and positivity. "
-            f"User said: {translated_prompt}"
+            f"You are a supportive, empathetic mental wellness assistant for young students. "
+            f"Always be encouraging, confidential, and positive. Avoid medical advice. "
+            f"User said: {prompt_translated}"
         )
-        reply_text = response.text if hasattr(response, "text") else "I'm here to support you 💙"
-        reply = GoogleTranslator(source="en", target=lang).translate(reply_text)
+        reply = response.text
+
+        # Translate reply if needed
+        if language != "English":
+            reply = GoogleTranslator(source="en", target=language.lower()).translate(reply)
 
     except Exception as e:
         reply = f"⚠️ Error: {str(e)}"
@@ -121,28 +127,18 @@ if st.button("🚨 Panic Button – Get Help", use_container_width=True):
 # --------------------------
 # MOOD TRACKER
 # --------------------------
-st.subheader("📊 Mood Tracker")
-mood = st.selectbox("How do you feel today?", ["😊 Happy", "😟 Stressed", "😐 Neutral", "😭 Sad"])
+st.markdown("### 📊 Mood Tracker")
+if "mood_log" not in st.session_state:
+    st.session_state["mood_log"] = []
 
+mood = st.selectbox("How do you feel today?", ["😊 Happy", "😟 Stressed", "😐 Neutral", "😭 Sad"])
 if st.button("Log Mood"):
     st.session_state["mood_log"].append({"date": datetime.date.today(), "mood": mood})
-    st.success("✔ Mood logged successfully!")
+    st.success("✅ Mood logged successfully!")
 
+# Show mood chart
 if st.session_state["mood_log"]:
     df = pd.DataFrame(st.session_state["mood_log"])
-    mood_map = {"😊 Happy": 0, "😟 Stressed": 1, "😐 Neutral": 2, "😭 Sad": 3}
-    df["mood_index"] = df["mood"].map(mood_map)
-    st.line_chart(df.set_index("date")["mood_index"])
-    st.caption("Y-axis: 0=Happy, 1=Stressed, 2=Neutral, 3=Sad")
-
-# --------------------------
-# JOURNAL DOWNLOAD
-# --------------------------
-if st.button("📥 Download My Journal", use_container_width=True):
-    log = "=== Chat History ===\n"
-    for msg in st.session_state["messages"]:
-        log += f"{msg['role'].capitalize()}: {msg['content']}\n"
-    log += "\n=== Mood Log ===\n"
-    for entry in st.session_state["mood_log"]:
-        log += f"{entry['date']} - {entry['mood']}\n"
-    st.download_button("⬇ Save Journal", log, file_name="my_wellness_journal.txt")
+    mood_map = {"😊 Happy": 3, "😟 Stressed": 1, "😐 Neutral": 2, "😭 Sad": 0}
+    df["mood_score"] = df["mood"].map(mood_map)
+    st.line_chart(df.set_index("date")["mood_score"])
