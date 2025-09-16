@@ -5,13 +5,14 @@ import pandas as pd
 from deep_translator import GoogleTranslator
 
 # --------------------------
-# CONFIGURE GEMINI
+# CONFIGURE GEMINI (SAFE: Load from Streamlit Secrets)
 # --------------------------
-<<<<<<< HEAD
-genai.configure(api_key="AIzaSyCMUMHtYdcICVeQrQo7swft7hmTcYR4834")  # ⚠️ Replace before running
-=======
-genai.configure(api_key="YOUR_API_KEY_HERE")  # ⚠️ Replace before running
->>>>>>> f69b769a539652f746c53e016fc324e084ea2593
+api_key = st.secrets.get("GEMINI_API_KEY")
+if not api_key:
+    st.error("❌ API key not found. Please add GEMINI_API_KEY in Streamlit Secrets.")
+    st.stop()
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --------------------------
@@ -20,13 +21,10 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 st.set_page_config(page_title="Youth Mental Wellness Chatbot", page_icon="💙", layout="wide")
 
 # --------------------------
-# CUSTOM CSS (UI/UX)
+# CUSTOM CSS (UI/UX Styling)
 # --------------------------
 st.markdown("""
     <style>
-        .main {
-            background: #f9faff;
-        }
         .stApp {
             background: linear-gradient(135deg, #e0f7fa, #fce4ec);
         }
@@ -39,12 +37,6 @@ st.markdown("""
             border-radius: 10px;
             background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
             margin-bottom: 20px;
-        }
-        .chat-container {
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
         }
         .user-msg {
             background: #cce5ff;
@@ -82,18 +74,17 @@ st.markdown("### 💬 Chat")
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
-with st.container():
-    for msg in st.session_state["messages"]:
-        if msg["role"] == "user":
-            st.markdown(f"<div class='user-msg'><b>You:</b> {msg['content']}</div>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<div class='bot-msg'><b>Bot:</b> {msg['content']}</div>", unsafe_allow_html=True)
+for msg in st.session_state["messages"]:
+    if msg["role"] == "user":
+        st.markdown(f"<div class='user-msg'><b>You:</b> {msg['content']}</div>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='bot-msg'><b>Bot:</b> {msg['content']}</div>", unsafe_allow_html=True)
 
 # --------------------------
 # CHAT INPUT
 # --------------------------
 if prompt := st.chat_input("How are you feeling today?"):
-    # Translate user input
+    # Translate user input if not English
     if language != "English":
         prompt_translated = GoogleTranslator(source="auto", target="en").translate(prompt)
     else:
@@ -109,9 +100,9 @@ if prompt := st.chat_input("How are you feeling today?"):
             f"Always be encouraging, confidential, and positive. Avoid medical advice. "
             f"User said: {prompt_translated}"
         )
-        reply = response.text
+        reply = response.text if hasattr(response, "text") else "I'm here for you 💙"
 
-        # Translate reply if needed
+        # Translate back if needed
         if language != "English":
             reply = GoogleTranslator(source="en", target=language.lower()).translate(reply)
 
