@@ -5,11 +5,11 @@ import pandas as pd
 from deep_translator import GoogleTranslator
 
 # --------------------------
-# CONFIGURE GEMINI (SAFE: Load from Streamlit Secrets)
+# CONFIGURE GEMINI (use Streamlit Secrets for security)
 # --------------------------
 api_key = st.secrets.get("GEMINI_API_KEY")
 if not api_key:
-    st.error("❌ API key not found. Please add GEMINI_API_KEY in Streamlit Secrets.")
+    st.error("❌ No API key found. Please add GEMINI_API_KEY in Streamlit Secrets.")
     st.stop()
 
 genai.configure(api_key=api_key)
@@ -21,16 +21,19 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 st.set_page_config(page_title="Youth Mental Wellness Chatbot", page_icon="💙", layout="wide")
 
 # --------------------------
-# CUSTOM CSS (UI/UX Styling)
+# CUSTOM CSS (to match your old UI)
 # --------------------------
 st.markdown("""
     <style>
+        .main {
+            background: #f9faff;
+        }
         .stApp {
-            background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+            background: linear-gradient(135deg, #fce4ec, #e3f2fd);
         }
         .header {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             padding: 15px;
             color: white;
@@ -39,14 +42,14 @@ st.markdown("""
             margin-bottom: 20px;
         }
         .user-msg {
-            background: #cce5ff;
-            padding: 8px 12px;
+            background: #e3f2fd;
+            padding: 10px;
             border-radius: 10px;
             margin: 5px 0;
         }
         .bot-msg {
-            background: #d4edda;
-            padding: 8px 12px;
+            background: #e8f5e9;
+            padding: 10px;
             border-radius: 10px;
             margin: 5px 0;
         }
@@ -56,8 +59,8 @@ st.markdown("""
 # --------------------------
 # HEADER
 # --------------------------
-st.markdown('<div class="header">💙 Youth Mental Wellness Chatbot 💙</div>', unsafe_allow_html=True)
-st.write("Confidential, empathetic AI support for students — anytime, anywhere.")
+st.markdown('<div class="header">🌟 Youth Mental Wellness Chatbot 🌟</div>', unsafe_allow_html=True)
+st.write("💙 Confidential, empathetic AI support for students — anytime, anywhere.")
 
 # --------------------------
 # SIDEBAR
@@ -84,25 +87,24 @@ for msg in st.session_state["messages"]:
 # CHAT INPUT
 # --------------------------
 if prompt := st.chat_input("How are you feeling today?"):
-    # Translate user input if not English
+    # Translate user input if needed
     if language != "English":
         prompt_translated = GoogleTranslator(source="auto", target="en").translate(prompt)
     else:
         prompt_translated = prompt
 
-    # Save user input
     st.session_state["messages"].append({"role": "user", "content": prompt})
 
     try:
-        # Generate AI reply
+        # AI response
         response = model.generate_content(
             f"You are a supportive, empathetic mental wellness assistant for young students. "
             f"Always be encouraging, confidential, and positive. Avoid medical advice. "
             f"User said: {prompt_translated}"
         )
-        reply = response.text if hasattr(response, "text") else "I'm here for you 💙"
+        reply = response.text
 
-        # Translate back if needed
+        # Translate reply back if needed
         if language != "English":
             reply = GoogleTranslator(source="en", target=language.lower()).translate(reply)
 
@@ -131,7 +133,6 @@ if st.button("Log Mood"):
     st.session_state["mood_log"].append({"date": datetime.date.today(), "mood": mood})
     st.success("✅ Mood logged successfully!")
 
-# Show mood chart
 if st.session_state["mood_log"]:
     df = pd.DataFrame(st.session_state["mood_log"])
     mood_map = {"😊 Happy": 3, "😟 Stressed": 1, "😐 Neutral": 2, "😭 Sad": 0}
