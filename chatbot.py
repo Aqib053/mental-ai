@@ -7,7 +7,11 @@ from deep_translator import GoogleTranslator
 # --------------------------
 # CONFIGURE GEMINI
 # --------------------------
+<<<<<<< HEAD
 genai.configure(api_key="AIzaSyCMUMHtYdcICVeQrQo7swft7hmTcYR4834")  # ⚠️ Replace before running
+=======
+genai.configure(api_key="YOUR_API_KEY_HERE")  # ⚠️ Replace before running
+>>>>>>> f69b769a539652f746c53e016fc324e084ea2593
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --------------------------
